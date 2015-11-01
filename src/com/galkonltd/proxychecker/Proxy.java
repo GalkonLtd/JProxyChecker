@@ -44,7 +44,6 @@ public class Proxy {
             client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
             client.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 15000);
             HttpResponse response = client.execute(get);
-            HttpEntity enti = response.getEntity();
             if (response != null) {
                 return true;
             }
