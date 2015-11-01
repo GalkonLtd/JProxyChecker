@@ -39,12 +39,12 @@ public class ProxyChecker {
             throw new RuntimeException("Unable to find proxy file: " + proxyFile.getAbsolutePath());
         }
         LOGGER.info("Parsing proxies...");
-        FileInputStream fstream = new FileInputStream(file);
-        BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+        FileInputStream stream = new FileInputStream(file);
+        BufferedReader in = new BufferedReader(new InputStreamReader(stream));
         String line;
         int passed = 0;
         int failed = 0;
-        while ((line = br.readLine()) != null) {
+        while ((line = in.readLine()) != null) {
             if (line.contains(":")) {
                 String[] args = line.split(":");
                 if (args.length == 2) {
@@ -60,15 +60,13 @@ public class ProxyChecker {
                 }
             }
         }
-        br.close();
+        in.close();
         LOGGER.info("Parsed proxy list. " + passed + " passed & " + failed + " failed.");
     }
 
     public void verifyProxies() throws IOException {
         LOGGER.info("Verifying " + this.proxyList.size() + " proxies...");
-        for (Proxy proxy : this.proxyList) {
-            verifyProxy(proxy);
-        }
+        this.proxyList.forEach(this::verifyProxy);
     }
 
     private void verifyProxy(Proxy proxy) {
@@ -81,7 +79,7 @@ public class ProxyChecker {
                 } else {
                     deadProxies++;
                 }
-                LOGGER.info("Proxy checking status: checked " + (workingProxies + deadProxies) + " proxies, " + workingProxies + " working, " + deadProxies + " dead.");
+                LOGGER.info("Proxy checking status: checked " + (workingProxies + deadProxies) + "/" + this.proxyList.size() + " proxies, " + workingProxies + " working, " + deadProxies + " dead.");
             } catch (IOException e) {
                 e.printStackTrace();
             }
