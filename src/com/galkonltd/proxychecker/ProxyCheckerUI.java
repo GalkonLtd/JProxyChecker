@@ -134,6 +134,7 @@ public class ProxyCheckerUI extends JFrame {
 
 		consoleLog = new JTextArea();
 		consoleLog.setLineWrap(true);
+		consoleLog.setEditable(false);
 		JScrollPane scrollPane = new JScrollPane(consoleLog);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		panel.add(scrollPane);
