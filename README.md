@@ -2,7 +2,7 @@
 A free multithreaded proxy checking program written in Java. Load a proxy list and check each proxy to verify it's alive to create a new list of working proxies.
 
 # Instructions
-1. Download JProxyChecker.jar here: https://github.com/MrGalkon/JProxyChecker/blob/master/bin/JProxyCheckerAIO.jar
+1. Download JProxyChecker.jar here: https://github.com/MrGalkon/JProxyChecker/blob/master/bin/JProxyChecker.jar
 2. Create a run script (run.bat, run.sh) and use this:
     java -cp .;JProxyChecker.jar; com.galkonltd.proxychecker.Main
 3. Put your proxy list in a file named "proxies.txt" in the runtime directory (wherever your run script is executed). It will automatically parse the list and filter out any duplicates.
