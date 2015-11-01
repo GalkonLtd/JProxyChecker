@@ -1,15 +1,15 @@
 # JProxyChecker
-A free multithreaded proxy checking program written in Java. Load a proxy list and check each proxy to verify it's alive.
+A free multithreaded proxy checking program written in Java. Load a proxy list and check each proxy to verify it's alive to create a new list of working proxies.
 
-To run out of the box, use the .jar located at "/bin/JProxyCheckerAIO.jar". Here is the start script (for batch or shell scripts):
+# Instructions
+1. Download JProxyChecker.jar here: https://github.com/MrGalkon/JProxyChecker/blob/master/bin/JProxyCheckerAIO.jar
+2. Create a run script (run.bat, run.sh) and use this:
+    java -cp .;JProxyChecker.jar; com.galkonltd.proxychecker.Main
+3. Put your proxy list in a file named "proxies.txt" in the runtime directory (wherever your run script is executed). It will automatically parse the list and filter out any duplicates.
+4. All live proxies will be written out to a file named "working_MONTH_DATE_TIMESTAMP.txt".
 
-    java -cp .;JProxyCheckerAIO.jar; com.galkonltd.proxychecker.Main
-  
-If you want to specify the thread count to use, add an argument to that line. Default thread count is 64. For example, to use 128 threads:
-
-    java -cp .;JProxyCheckerAIO.jar; com.galkonltd.proxychecker.Main 128
-
-Put your "proxies.txt" file in the runtime directory, and it will automatically parse it and filter any duplicates. All live proxies will be written out to a file titled "working_MONTH_DATE_TIMESTAMP.txt" in the runtime directory.
+Additionally, you can specify the thread count to use. The default is 64 threads. Simply add an argument to the run command to specify it, for example:
+    java -cp .;JProxyChecker.jar; com.galkonltd.proxychecker.Main 128
 
 # Requirements
 Java 8+ - http://java.com/download/
