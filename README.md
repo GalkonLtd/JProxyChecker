@@ -12,7 +12,7 @@ A free multithreaded proxy checking program written in Java. Load a proxy list a
 
 Additionally, you can specify the thread count to use. The default is 64 threads. Simply add an argument to the run command to specify it, for example:
 
-		java -cp .;JProxyChecker.jar; com.galkonltd.proxychecker.Main 128
+	java -cp .;JProxyChecker.jar; com.galkonltd.proxychecker.Main 128
 
 # Requirements
 Java 8+ - http://java.com/download/
