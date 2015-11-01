@@ -1,16 +1,19 @@
 package com.galkonltd.proxychecker;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.params.CoreConnectionPNames;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 
 /**
  * "The real danger is not that computers will begin to think like men, but that men will begin to think like computers." – Sydney Harris
@@ -37,6 +40,7 @@ public class Proxy {
     }
 
     private boolean connect(String host, int port) {
+        boolean connected = false;
         try {
             HttpClient client = new DefaultHttpClient();
             HttpGet get = new HttpGet("http://www.google.com/");
@@ -45,11 +49,22 @@ public class Proxy {
             client.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 15000);
             HttpResponse response = client.execute(get);
             if (response != null) {
-                return true;
+                connected = true;
             }
         } catch (Exception ex) {
         }
-        return false;
+        if (!connected) {
+            try {
+                Socket socket = new Socket(host, port);
+                InetSocketAddress addr = new InetSocketAddress("www.google.com", 80);
+                socket.connect(addr, 5000);
+                if (socket.isConnected()) {
+                    connected = true;
+                }
+            } catch (IOException e) {
+            }
+        }
+        return connected;
     }
 
     public String getHost() {
