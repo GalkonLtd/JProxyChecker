@@ -1,6 +1,5 @@
 package com.galkonltd.proxychecker;
 
-import java.io.IOException;
 import java.util.logging.Logger;
 
 /**
@@ -12,23 +11,15 @@ import java.util.logging.Logger;
 public class Main {
 
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+    public static int threadCount = 64;
 
     public static void main(String[] args){
-        int threadCount = 64;
         if (args != null) {
             if (args.length >= 1) {
                 threadCount = Integer.parseInt(args[0]);
             }
         }
         ProxyChecker checker = new ProxyChecker(threadCount);
-        try {
-            LOGGER.info("Parsing proxy list...");
-            checker.parseProxies("proxies.txt");
-            LOGGER.info("Verifying proxies using " + threadCount + " threads...");
-            checker.verifyProxies();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 }

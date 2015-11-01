@@ -1,5 +1,6 @@
 package com.galkonltd.proxychecker;
 
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +25,7 @@ public class ProxyChecker {
     private final List<Proxy> proxyList;
     private int deadProxies;
     private int workingProxies;
+    private ProxyCheckerUI gui;
 
     private final Date date = new Date();
 
@@ -31,6 +33,14 @@ public class ProxyChecker {
         this.proxyList = new ArrayList<>();
         this.deadProxies = this.workingProxies = 0;
         PROXY_CHECKER = Executors.newFixedThreadPool(threadCount);
+        final ProxyChecker instance = this;
+        EventQueue.invokeLater(() -> {
+            try {
+                gui = new ProxyCheckerUI(instance);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public void parseProxies(String file) throws IOException {
@@ -39,6 +49,7 @@ public class ProxyChecker {
             throw new RuntimeException("Unable to find proxy file: " + proxyFile.getAbsolutePath());
         }
         LOGGER.info("Parsing proxies...");
+        gui.updateConsoleLog("Parsing proxies...");
         FileInputStream stream = new FileInputStream(file);
         BufferedReader in = new BufferedReader(new InputStreamReader(stream));
         String line;
@@ -62,10 +73,13 @@ public class ProxyChecker {
         }
         in.close();
         LOGGER.info("Parsed proxy list. " + passed + " passed & " + failed + " failed.");
+        gui.updateConsoleLog("Parsed proxy list. " + passed + " passed & " + failed + " failed.");
+        gui.updateTotalProxies(proxyList.size());
     }
 
     public void verifyProxies() throws IOException {
         LOGGER.info("Verifying " + this.proxyList.size() + " proxies...");
+        gui.updateConsoleLog("Verifying " + this.proxyList.size() + " proxies...");
         this.proxyList.forEach(this::verifyProxy);
     }
 
@@ -73,13 +87,18 @@ public class ProxyChecker {
         PROXY_CHECKER.submit(() -> {
             try {
                 LOGGER.info("Verifying proxy: " + proxy.toString());
+                this.gui.updateConsoleLog("Verifying proxy: " + proxy.toString());
                 if (proxy.check()) {
                     writeWorkingProxy(proxy);
-                    workingProxies++;
+                    this.workingProxies++;
+                    this.gui.updateLiveProxies(this.workingProxies);
                 } else {
-                    deadProxies++;
+                    this.deadProxies++;
+                    this.gui.updateDeadProxies(this.deadProxies);
                 }
-                LOGGER.info("Proxy checking status: checked " + (workingProxies + deadProxies) + "/" + this.proxyList.size() + " proxies, " + workingProxies + " working, " + deadProxies + " dead.");
+                LOGGER.info("Proxy checking status: checked " + (this.workingProxies + this.deadProxies) + "/" + this.proxyList.size() + " proxies, " + this.workingProxies + " working, " + this.deadProxies + " dead.");
+                this.gui.updateConsoleLog("Proxy checking status: checked " + (this.workingProxies + this.deadProxies) + "/" + this.proxyList.size() + " proxies, " + this.workingProxies + " working, " + this.deadProxies + " dead.");
+                this.gui.updateProgress(this.workingProxies + this.deadProxies, this.proxyList.size());
             } catch (IOException e) {
                 e.printStackTrace();
             }
