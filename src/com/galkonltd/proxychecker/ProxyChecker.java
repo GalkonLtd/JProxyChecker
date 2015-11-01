@@ -81,7 +81,7 @@ public class ProxyChecker {
                 } else {
                     deadProxies++;
                 }
-                LOGGER.info("Proxy checking status: " + workingProxies + " working, " + deadProxies + " dead.");
+                LOGGER.info("Proxy checking status: checked " + (workingProxies + deadProxies) + "proxies, " + workingProxies + " working, " + deadProxies + " dead.");
             } catch (IOException e) {
                 e.printStackTrace();
             }

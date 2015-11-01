@@ -34,7 +34,7 @@ public class Proxy {
     public boolean check() throws IOException {
         InetAddress addr = InetAddress.getByName(this.host);
         if (addr.isReachable(5000)) {
-            return connect(this.host, this.port);
+            return true;//;return connect(this.host, this.port);
         }
         return false;
     }
@@ -59,15 +59,6 @@ public class Proxy {
                 InetSocketAddress addr = new InetSocketAddress("www.google.com", 80);
                 socket.connect(addr, 5000);
                 if (socket.isConnected()) {
-                    connected = true;
-                }
-            } catch (IOException e) {
-            }
-        }
-        if (!connected) {
-            try {
-                InetAddress addr = InetAddress.getByName(this.host);
-                if (addr.isReachable(5000)) {
                     connected = true;
                 }
             } catch (IOException e) {
