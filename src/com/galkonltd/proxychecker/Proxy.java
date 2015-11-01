@@ -64,6 +64,15 @@ public class Proxy {
             } catch (IOException e) {
             }
         }
+        if (!connected) {
+            try {
+                InetAddress addr = InetAddress.getByName(this.host);
+                if (addr.isReachable(5000)) {
+                    connected = true;
+                }
+            } catch (IOException e) {
+            }
+        }
         return connected;
     }
 
