@@ -78,16 +78,16 @@ public class ProxyChecker {
     }
 
     public void verifyProxies() throws IOException {
-        LOGGER.info("Verifying " + this.proxyList.size() + " proxies...");
-        gui.updateConsoleLog("Verifying " + this.proxyList.size() + " proxies...");
+        LOGGER.info("Checking " + this.proxyList.size() + " proxies...");
+        gui.updateConsoleLog("Checking " + this.proxyList.size() + " proxies...");
         this.proxyList.forEach(this::verifyProxy);
     }
 
     private void verifyProxy(Proxy proxy) {
         PROXY_CHECKER.submit(() -> {
             try {
-                LOGGER.info("Verifying proxy: " + proxy.toString());
-                this.gui.updateConsoleLog("Verifying proxy: " + proxy.toString());
+                LOGGER.info("Checking proxy: " + proxy.toString());
+                this.gui.updateConsoleLog("Checking proxy: " + proxy.toString());
                 if (proxy.check()) {
                     writeWorkingProxy(proxy);
                     this.workingProxies++;
@@ -97,7 +97,6 @@ public class ProxyChecker {
                     this.gui.updateDeadProxies(this.deadProxies);
                 }
                 LOGGER.info("Proxy checking status: checked " + (this.workingProxies + this.deadProxies) + "/" + this.proxyList.size() + " proxies, " + this.workingProxies + " working, " + this.deadProxies + " dead.");
-                this.gui.updateConsoleLog("Proxy checking status: checked " + (this.workingProxies + this.deadProxies) + "/" + this.proxyList.size() + " proxies, " + this.workingProxies + " working, " + this.deadProxies + " dead.");
                 this.gui.updateProgress(this.workingProxies + this.deadProxies, this.proxyList.size());
             } catch (IOException e) {
                 e.printStackTrace();
