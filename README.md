@@ -1,5 +1,5 @@
 # JProxyChecker
-A free proxy checking program. Load a proxy list and check each proxy to verify it's alive.
+A free multithreaded proxy checking program written in Java. Load a proxy list and check each proxy to verify it's alive.
 
 To run out of the box, use the .jar located at "/bin/JProxyCheckerAIO.jar". Here is the start script (for batch or shell scripts):
 
@@ -9,4 +9,7 @@ If you want to specify the thread count to use, add an argument to that line. De
 
     java -cp .;JProxyCheckerAIO.jar; com.galkonltd.proxychecker.Main 128
 
-Put your "proxies.txt" file in the runtime directory, and it will automatically parse it and filter any duplicates. All working proxies will be output to a file titled "working_MONTH_DATE_TIMESTAMP.txt".
+Put your "proxies.txt" file in the runtime directory, and it will automatically parse it and filter any duplicates. All live proxies will be written out to a file titled "working_MONTH_DATE_TIMESTAMP.txt" in the runtime directory.
+
+# Requirements
+Java 8+ - http://java.com/download/
