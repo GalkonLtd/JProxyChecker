@@ -12,6 +12,7 @@ public class Main {
 
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
     public static int threadCount = 64;
+    public static boolean checkGoogle = false;
 
     public static void main(String[] args){
         if (args != null) {
@@ -19,7 +20,7 @@ public class Main {
                 threadCount = Integer.parseInt(args[0]);
             }
         }
-        ProxyChecker checker = new ProxyChecker(threadCount);
+        new ProxyChecker(threadCount);
     }
 
 }

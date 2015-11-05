@@ -21,6 +21,7 @@ public class ProxyCheckerUI extends JFrame {
 	private final JProgressBar progressBar;
 	private final JButton checkButton;
 	private final JTextArea consoleLog;
+	private final JCheckBox checkGoogle;
 	private JPanel contentPane;
 	private final ProxyChecker checker;
 
@@ -66,9 +67,9 @@ public class ProxyCheckerUI extends JFrame {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{0, 0, 0, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, 1.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		totalProxies = new JLabel("Total proxies: 0");
@@ -100,6 +101,15 @@ public class ProxyCheckerUI extends JFrame {
 		gbc_progressBar.gridx = 0;
 		gbc_progressBar.gridy = 1;
 		contentPane.add(progressBar, gbc_progressBar);
+
+		checkGoogle = new JCheckBox("Check Google.com");
+		checkGoogle.addActionListener(e -> Main.checkGoogle = checkGoogle.isSelected());
+		GridBagConstraints gbc_checkGoogle = new GridBagConstraints();
+		gbc_checkGoogle.fill = GridBagConstraints.HORIZONTAL;
+		gbc_checkGoogle.insets = new Insets(0, 0, 5, 5);
+		gbc_checkGoogle.gridx = 0;
+		gbc_checkGoogle.gridy = 2;
+		contentPane.add(checkGoogle, gbc_checkGoogle);
 		
 		checkButton = new JButton("Run Check");
 		checkButton.addActionListener(e -> {
@@ -110,6 +120,7 @@ public class ProxyCheckerUI extends JFrame {
 	            checker.verifyProxies();
 				checkButton.setEnabled(false);
 				checkButton.setText("Check in progress");
+				checkGoogle.setEnabled(false);
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -119,7 +130,7 @@ public class ProxyCheckerUI extends JFrame {
 		gbc_checkButton.fill = GridBagConstraints.HORIZONTAL;
 		gbc_checkButton.insets = new Insets(0, 0, 5, 0);
 		gbc_checkButton.gridx = 0;
-		gbc_checkButton.gridy = 2;
+		gbc_checkButton.gridy = 3;
 		contentPane.add(checkButton, gbc_checkButton);
 		
 		JPanel panel = new JPanel();
@@ -128,7 +139,7 @@ public class ProxyCheckerUI extends JFrame {
 		gbc_panel.gridwidth = 3;
 		gbc_panel.fill = GridBagConstraints.BOTH;
 		gbc_panel.gridx = 0;
-		gbc_panel.gridy = 3;
+		gbc_panel.gridy = 4;
 		contentPane.add(panel, gbc_panel);
 		panel.setLayout(new BorderLayout(0, 0));
 

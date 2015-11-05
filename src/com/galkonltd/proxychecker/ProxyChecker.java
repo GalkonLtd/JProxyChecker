@@ -80,6 +80,10 @@ public class ProxyChecker {
     public void verifyProxies() throws IOException {
         LOGGER.info("Checking " + this.proxyList.size() + " proxies...");
         gui.updateConsoleLog("Checking " + this.proxyList.size() + " proxies...");
+        if (Main.checkGoogle) {
+            LOGGER.info("Checking connection to google.com for proxy verification...");
+            gui.updateConsoleLog("Checking connection to google.com for proxy verification...");
+        }
         this.proxyList.forEach(this::verifyProxy);
     }
 
