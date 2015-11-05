@@ -31,16 +31,16 @@ public class Proxy {
     }
 
     public boolean check() throws IOException {
-        InetAddress addr = InetAddress.getByName(this.host);
         try {
+            InetAddress addr = InetAddress.getByName(this.host);
             if (addr.isReachable(5000)) {
                 return (Main.checkGoogle ? checkGoogle() : true);
             }
         } catch (UnknownHostException e) {
             try {
                 Socket socket = new Socket(host, port);
-                InetSocketAddress addr2 = new InetSocketAddress("http://www.google.com", 80);
-                socket.connect(addr2, 10000);
+                InetSocketAddress addr = new InetSocketAddress("http://www.google.com", 80);
+                socket.connect(addr, 10000);
                 if (socket.isConnected()) {
                     return true;
                 }
