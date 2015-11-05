@@ -1,5 +1,7 @@
 package com.galkonltd.proxychecker;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -13,6 +15,7 @@ public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
     public static int threadCount = 64;
     public static boolean checkGoogle = false;
+    public static List<Integer> filteredPorts = new ArrayList<>();
 
     public static void main(String[] args){
         if (args != null) {

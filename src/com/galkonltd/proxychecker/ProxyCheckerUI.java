@@ -25,6 +25,7 @@ public class ProxyCheckerUI extends JFrame {
 	private final JTextArea consoleLog;
 	private final JCheckBox checkGoogle;
 	private final JSpinner threadCountSpinner;
+	private final JTextField portFilterField;
 	private JPanel contentPane;
 	private final ProxyChecker checker;
 
@@ -142,15 +143,58 @@ public class ProxyCheckerUI extends JFrame {
 		checkGoogle = new JCheckBox("Check Google.com");
 		checkGoogle.addActionListener(e -> Main.checkGoogle = checkGoogle.isSelected());
 		GridBagConstraints gbc_checkGoogle = new GridBagConstraints();
-		gbc_checkGoogle.anchor = GridBagConstraints.WEST;
 		gbc_checkGoogle.insets = new Insets(0, 0, 5, 5);
 		gbc_checkGoogle.gridx = 1;
 		gbc_checkGoogle.gridy = 2;
 		contentPane.add(checkGoogle, gbc_checkGoogle);
+
+		JPanel panel_2 = new JPanel();
+		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
+		gbc_panel_2.insets = new Insets(0, 0, 5, 0);
+		gbc_panel_2.fill = GridBagConstraints.BOTH;
+		gbc_panel_2.gridx = 2;
+		gbc_panel_2.gridy = 2;
+		contentPane.add(panel_2, gbc_panel_2);
+		GridBagLayout gbl_panel_2 = new GridBagLayout();
+		gbl_panel_2.columnWidths = new int[]{0, 0, 0};
+		gbl_panel_2.rowHeights = new int[]{0, 0};
+		gbl_panel_2.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_panel_2.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		panel_2.setLayout(gbl_panel_2);
+
+		JLabel lblFilterPorts = new JLabel("Filter ports:");
+		GridBagConstraints gbc_lblFilterPorts = new GridBagConstraints();
+		gbc_lblFilterPorts.insets = new Insets(0, 0, 0, 5);
+		gbc_lblFilterPorts.anchor = GridBagConstraints.EAST;
+		gbc_lblFilterPorts.fill = GridBagConstraints.VERTICAL;
+		gbc_lblFilterPorts.gridx = 0;
+		gbc_lblFilterPorts.gridy = 0;
+		panel_2.add(lblFilterPorts, gbc_lblFilterPorts);
+
+		portFilterField = new JTextField();
+		GridBagConstraints gbc_portFilterField = new GridBagConstraints();
+		gbc_portFilterField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_portFilterField.gridx = 1;
+		gbc_portFilterField.gridy = 0;
+		panel_2.add(portFilterField, gbc_portFilterField);
+		portFilterField.setColumns(10);
 		
 		checkButton = new JButton("Run Check");
 		checkButton.addActionListener(e -> {
 			try {
+				if (!portFilterField.getText().isEmpty()) {
+					String[] args = portFilterField.getText().split(",");
+					if (args != null) {
+						for (String p : args) {
+							try {
+								int port = Integer.parseInt(p);
+								Main.filteredPorts.add(port);
+							} catch (Exception ex) {
+
+							}
+						}
+					}
+				}
 				updateConsoleLog("Running proxy list check...");
 				checker.parseProxies("proxies.txt");
 				updateConsoleLog("Verifying proxies using " + Main.threadCount + " threads...");

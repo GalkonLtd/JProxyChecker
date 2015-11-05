@@ -54,12 +54,17 @@ public class ProxyChecker {
         int passed = 0;
         int failed = 0;
         int duplicates = 0;
+        int filtered = 0;
         while ((line = in.readLine()) != null) {
             if (line.contains(":")) {
                 String[] args = line.split(":");
                 if (args.length == 2) {
                     String host = args[0];
                     int port = Integer.parseInt(args[1]);
+                    if (Main.filteredPorts.contains(port)) {
+                        filtered++;
+                        continue;
+                    }
                     Proxy proxy = new Proxy(host, port);
                     if (proxyMap.containsKey(proxy.getHost() + ":" + proxy.getPort())) {
                         duplicates++;
