@@ -203,6 +203,7 @@ public class ProxyCheckerUI extends JFrame {
 				checkButton.setText("Check in progress");
 				checkGoogle.setEnabled(false);
 				threadCountSpinner.setEnabled(false);
+				portFilterField.setEnabled(false);
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
