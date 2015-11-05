@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 /**
  * "The real danger is not that computers will begin to think like men, but that men will begin to think like computers." – Sydney Harris
@@ -31,8 +32,20 @@ public class Proxy {
 
     public boolean check() throws IOException {
         InetAddress addr = InetAddress.getByName(this.host);
-        if (addr.isReachable(5000)) {
-            return (Main.checkGoogle ? checkGoogle() : true);
+        try {
+            if (addr.isReachable(5000)) {
+                return (Main.checkGoogle ? checkGoogle() : true);
+            }
+        } catch (UnknownHostException e) {
+            try {
+                Socket socket = new Socket(host, port);
+                InetSocketAddress addr2 = new InetSocketAddress("http://www.google.com", 80);
+                socket.connect(addr2, 10000);
+                if (socket.isConnected()) {
+                    return true;
+                }
+            } catch (IOException ex) {
+            }
         }
         return false;
     }
