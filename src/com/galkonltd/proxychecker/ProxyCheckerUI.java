@@ -12,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class ProxyCheckerUI extends JFrame {
 
@@ -22,6 +24,7 @@ public class ProxyCheckerUI extends JFrame {
 	private final JButton checkButton;
 	private final JTextArea consoleLog;
 	private final JCheckBox checkGoogle;
+	private final JSpinner threadCountSpinner;
 	private JPanel contentPane;
 	private final ProxyChecker checker;
 
@@ -102,12 +105,46 @@ public class ProxyCheckerUI extends JFrame {
 		gbc_progressBar.gridy = 1;
 		contentPane.add(progressBar, gbc_progressBar);
 
+
+		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(null);
+		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
+		gbc_panel_1.insets = new Insets(0, 0, 5, 5);
+		gbc_panel_1.fill = GridBagConstraints.BOTH;
+		gbc_panel_1.gridx = 0;
+		gbc_panel_1.gridy = 2;
+		contentPane.add(panel_1, gbc_panel_1);
+		GridBagLayout gbl_panel_1 = new GridBagLayout();
+		gbl_panel_1.columnWidths = new int[]{68, 29, 0};
+		gbl_panel_1.rowHeights = new int[]{20, 0};
+		gbl_panel_1.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_panel_1.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		panel_1.setLayout(gbl_panel_1);
+
+		JLabel lblThreadCount = new JLabel("Thread count:");
+		GridBagConstraints gbc_lblThreadCount = new GridBagConstraints();
+		gbc_lblThreadCount.anchor = GridBagConstraints.WEST;
+		gbc_lblThreadCount.insets = new Insets(0, 0, 0, 5);
+		gbc_lblThreadCount.gridx = 0;
+		gbc_lblThreadCount.gridy = 0;
+		panel_1.add(lblThreadCount, gbc_lblThreadCount);
+
+		threadCountSpinner = new JSpinner();
+		threadCountSpinner.setModel(new SpinnerNumberModel(64, 1, 512, 8));
+		threadCountSpinner.addChangeListener(e -> Main.threadCount = (int) threadCountSpinner.getValue());
+		GridBagConstraints gbc_threadCountSpinner = new GridBagConstraints();
+		gbc_threadCountSpinner.fill = GridBagConstraints.HORIZONTAL;
+		gbc_threadCountSpinner.anchor = GridBagConstraints.NORTH;
+		gbc_threadCountSpinner.gridx = 1;
+		gbc_threadCountSpinner.gridy = 0;
+		panel_1.add(threadCountSpinner, gbc_threadCountSpinner);
+
 		checkGoogle = new JCheckBox("Check Google.com");
 		checkGoogle.addActionListener(e -> Main.checkGoogle = checkGoogle.isSelected());
 		GridBagConstraints gbc_checkGoogle = new GridBagConstraints();
-		gbc_checkGoogle.fill = GridBagConstraints.HORIZONTAL;
+		gbc_checkGoogle.anchor = GridBagConstraints.WEST;
 		gbc_checkGoogle.insets = new Insets(0, 0, 5, 5);
-		gbc_checkGoogle.gridx = 0;
+		gbc_checkGoogle.gridx = 1;
 		gbc_checkGoogle.gridy = 2;
 		contentPane.add(checkGoogle, gbc_checkGoogle);
 		
@@ -121,6 +158,7 @@ public class ProxyCheckerUI extends JFrame {
 				checkButton.setEnabled(false);
 				checkButton.setText("Check in progress");
 				checkGoogle.setEnabled(false);
+				threadCountSpinner.setEnabled(false);
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
