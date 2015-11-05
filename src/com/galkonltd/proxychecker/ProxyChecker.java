@@ -63,6 +63,7 @@ public class ProxyChecker {
                     Proxy proxy = new Proxy(host, port);
                     if (proxyMap.containsKey(proxy.getHost() + ":" + proxy.getPort())) {
                         duplicates++;
+                        continue;
                     }
                     proxyMap.put(proxy.getHost() + ":" + proxy.getPort(), proxy);
                     passed++;
